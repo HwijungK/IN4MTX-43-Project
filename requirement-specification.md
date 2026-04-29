@@ -5,7 +5,8 @@ Members:
 - June Kim \- [hwijungk@uci.edu](mailto:hwijungk@uci.edu)  
 - Addie Ruan \- [addier@uci.edu](mailto:addier@uci.edu)  
 - Jose Ramos \- jgramos3@uci.edu  
-- Celina Chen \- [celinac7@uci.edu](mailto:celinac7@uci.edu) 
+- Celina Chen \- [celinac7@uci.edu](mailto:celinac7@uci.edu)
+- Christine Yiu \- [yiucc1@uci.edu](mailto:yiucc1@uci.edu)
 
 # 
 
