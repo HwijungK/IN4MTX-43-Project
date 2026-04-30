@@ -5,8 +5,8 @@ Members:
 - June Kim \- [hwijungk@uci.edu](mailto:hwijungk@uci.edu)  
 - Addie Ruan \- [addier@uci.edu](mailto:addier@uci.edu)  
 - Jose Ramos \- jgramos3@uci.edu  
-- Celina Chen \- [celinac7@uci.edu](mailto:celinac7@uci.edu)   
-- Christine Yiu \- yiucc1@uci.edu
+- Celina Chen \- [celinac7@uci.edu](mailto:celinac7@uci.edu)
+- Christine Yiu \- [yiucc1@uci.edu](mailto:yiucc1@uci.edu)
 
 # 
 
@@ -161,35 +161,35 @@ While offering high customization and engagement potential, the app must address
 - **6\. Communities**  
   - Communities are groups people with the same hobbies can join  
   - Community leads can make official announcements and post group meetings  
-  - *Pros: Easy way for people to meet lots of people with the same interests, naturally groups people by interests which is one of the main points of the app, people will expect this kind of functionality when coming from other apps like facebook*  
-  - ***Use Case***  
-    - *Basic:*  
-      - *The user navigates to the "Communities" tab to browse hobby-based groups.*  
-      - *User selects a community based on a shared interest*  
-      - *The user views the community landing page and clicks "Join Community."*  
-      - *Community Lead posts an official announcement regarding an upcoming weekend meetup.*  
-      - *Users receive a notification for the announcement and mark themselves as "Attending."*  
-      - *Users join the community-wide discussion thread to coordinate carpooling or gear.*  
-    - *Alternative:*  
-      - *Community Lead creates an official event*  
-      - *Lead navigates to the "Manage Community" dashboard.*  
-      - *Lead selects "Create Meeting" and inputs date, time, and location.*  
-      - *The system pins the meeting to the community's "Events" tab and notifies all members.*  
-      - *Return to step 5 of basic flow.*  
-      - *User searches for a community by keyword*  
-      - *The user enters a specific hobby into the community search bar.*  
-      - *The system displays a list of public communities matching the keyword, sorted by proximity.*  
-      - *Users click on a community profile to preview recent posts.*  
-      - *Return to step 3 of basic flow.*  
-    - *Exception:*  
-      - *User attempts to join a private or restricted community*  
-      - *The user clicks "Request to Join" for a moderated community.*  
-      - *The system sends a request notification to the Community Lead.*  
-      - *Lead reviews the user’s profile and denies the request based on community rules.*  
-      - *Users receive a notification that their request was declined; community content remains hidden.*  
-      - *Community Lead posts an announcement with prohibited content*  
-      - *Lead attempts to publish an announcement containing flagged keywords or profanity.*  
-      - *Lead must edit the post to comply with community guidelines before publishing.*  
+  - *Pros: Easy way for people to meet lots of people with the same interests, naturally groups people by interests which is one of the main points of the app, people will expect this kind of functionality when coming from other apps like facebook*
+  - **Use Case**  
+      - Basic:  
+        - 1\. The user navigates to the "Communities" tab to browse hobby-based groups.
+        - 2\. User selects a community based on a shared interest
+        - 3\. The user views the community landing page and clicks "Join Community."
+        - 4\. Community Lead posts an official announcement regarding an upcoming weekend meetup.
+        - 5\. Users receive a notification for the announcement and mark themselves as "Attending."
+        - 6\. Users join the community-wide discussion thread to coordinate carpooling or gear.
+      - Alternative:   
+        - 1\. Community Lead creates an official event
+        - 2\. Lead navigates to the "Manage Community" dashboard.
+        - 3\. Lead selects "Create Meeting" and inputs date, time, and location.
+        - 4\. The system pins the meeting to the community's "Events" tab and notifies all members.
+        - 5\. Return to step 5 of basic flow.
+        - 6\. User searches for a community by keyword
+        - 7\. The user enters a specific hobby into the community search bar.
+        - 8\. The system displays a list of public communities matching the keyword, sorted by proximity.
+        - 9\. Users click on a community profile to preview recent posts.
+        Return to step 3 of basic flow.
+      - Exception:  
+        - 1\. User attempts to join a private or restricted community
+        - 2\. The user clicks "Request to Join" for a moderated community.
+        - 3\. The system sends a request notification to the Community Lead.
+        - 4\. Lead reviews the user’s profile and denies the request based on community rules.
+        - 5\. Users receive a notification that their request was declined; community content remains hidden.
+        - 6\. Community Lead posts an announcement with prohibited content
+        - 7\. Lead attempts to publish an announcement containing flagged keywords or profanity.
+        - 8\. Lead must edit the post to comply with community guidelines before publishing.
 - **7\. Exploring new hobbies**  
   - A leaderboard for the most popular interests on the site  
   - Recommended interests to look into, that matches interests that many of your friends have  
@@ -227,3 +227,5 @@ While offering high customization and engagement potential, the app must address
       - User searches for an interest/hobby name that has profanity  
       - The site will return an error message: “Search cannot contain offensive words”  
       - No interest tags will be displayed
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
