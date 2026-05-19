@@ -26,8 +26,8 @@ npm install
 npm run start
 ```
 
-Then open the app with Expo Go, an iOS simulator, an Android emulator, or the
-Expo web preview.
+Then open the app with Expo Go, an iOS simulator, or an Android emulator.
+Web preview is intentionally disabled because this prototype targets mobile app behavior.
 
 ## Product Direction
 
@@ -42,3 +42,16 @@ Current assumptions:
 - Fuzzy map markers for individual students and nearby groups
 - Persistent chat should require a mutual friend connection
 - Communities can be informal student-led groups, not only official campus organizations
+
+## Supabase
+
+Supabase setup instructions live in [docs/supabase-setup.md](docs/supabase-setup.md).
+
+The app expects these local environment variables in `.env`:
+
+```env
+EXPO_PUBLIC_SUPABASE_URL=...
+EXPO_PUBLIC_SUPABASE_ANON_KEY=...
+```
+
+Use `.env.example` as the template. Do not commit real keys.
