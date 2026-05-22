@@ -26,7 +26,7 @@ export type Database = {
           display_name: string;
           bio: string | null;
           identity_group: string;
-          age_range: string;
+          age: number;
           university_id: string | null;
           verified_university: boolean;
           avatar_url: string | null;
@@ -38,7 +38,7 @@ export type Database = {
           display_name: string;
           bio?: string | null;
           identity_group: string;
-          age_range: string;
+          age: number;
           university_id?: string | null;
           verified_university?: boolean;
           avatar_url?: string | null;

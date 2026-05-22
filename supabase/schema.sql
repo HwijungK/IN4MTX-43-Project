@@ -73,7 +73,7 @@ create table if not exists public.profiles (
   display_name text not null check (length(trim(display_name)) > 0),
   bio text,
   identity_group public.identity_group not null default 'university_student',
-  age_range text not null,
+  age integer not null check (age >= 0 and age <= 120),
   university_id uuid references public.universities(id),
   verified_university boolean not null default false,
   avatar_url text,

@@ -13,14 +13,14 @@ type ProfileScreenProps = {
   bio: string;
   identity: string;
   university: string;
-  ageRange: string;
+  age: string;
   selectedTags: string[];
   notice: string;
   onDisplayName: (value: string) => void;
   onBio: (value: string) => void;
   onIdentity: (value: string) => void;
   onUniversity: (value: string) => void;
-  onAgeRange: (value: string) => void;
+  onAge: (value: string) => void;
   onRemoveTag: (tag: string) => void;
   onSignOut?: () => void;
 };
@@ -30,14 +30,14 @@ export function ProfileScreen({
   bio,
   identity,
   university,
-  ageRange,
+  age,
   selectedTags,
   notice,
   onDisplayName,
   onBio,
   onIdentity,
   onUniversity,
-  onAgeRange,
+  onAge,
   onRemoveTag,
   onSignOut
 }: ProfileScreenProps) {
@@ -50,7 +50,7 @@ export function ProfileScreen({
         <View style={styles.flexOne}>
           <Text style={styles.heroTitle}>{displayName || "New user"}</Text>
           <Text style={styles.metaText}>
-            {identity} | Verified {shortUniversity(university)} | {ageRange}
+            {identity} | Verified {shortUniversity(university)} | Age {age}
           </Text>
         </View>
       </View>
@@ -64,7 +64,7 @@ export function ProfileScreen({
       <ChoiceChips choices={identityGroups} selected={identity} onSelect={onIdentity} />
       <Text style={styles.sectionTitle}>University badge</Text>
       <ChoiceChips choices={universities} selected={university} onSelect={onUniversity} />
-      <Field label="Age range" value={ageRange} onChangeText={onAgeRange} />
+      <Field label="Age" value={age} onChangeText={onAge} keyboardType="number-pad" />
       <Text style={styles.sectionTitle}>Profile interests</Text>
       <View style={styles.tagWrap}>
         {selectedTags.map((tag) => (

@@ -9,7 +9,7 @@ export type ProfileInput = {
   displayName: string;
   bio: string;
   identity: string;
-  ageRange: string;
+  age: string;
   university: string;
 };
 
@@ -79,7 +79,7 @@ export async function upsertProfile(input: ProfileInput) {
         display_name: input.displayName.trim(),
         bio: input.bio.trim() || null,
         identity_group: toIdentityGroup(input.identity),
-        age_range: input.ageRange.trim(),
+        age: Number.parseInt(input.age.trim(), 10),
         university_id: university?.id ?? null,
         verified_university: Boolean(university)
       },
@@ -100,7 +100,7 @@ export function profileToAppFields(profile: ProfileRow, university?: UniversityR
     displayName: profile.display_name,
     bio: profile.bio ?? "",
     identity: fromIdentityGroup(profile.identity_group),
-    ageRange: profile.age_range,
+    age: String(profile.age),
     university: university?.name ?? "UC Irvine"
   };
 }

@@ -28,7 +28,7 @@ import {
 import type { ProfileRow } from "../services/profileService";
 
 type AppContextValue = {
-  ageRange: string;
+  age: string;
   authError: string;
   authLoading: boolean;
   bio: string;
@@ -60,9 +60,10 @@ type AppContextValue = {
   createTagFromQuery: () => void;
   enterDevBypass: () => void;
   joinCommunity: (community: Community) => void;
-  prepareSignup: (email: string, password: string) => void;
+  setPendingSignupEmail: (value: string) => void;
+  setPendingSignupPassword: (value: string) => void;
   removeTag: (tag: string) => void;
-  setAgeRange: (value: string) => void;
+  setAge: (value: string) => void;
   setBio: (value: string) => void;
   setDisplayName: (value: string) => void;
   setIdentity: (value: string) => void;
@@ -89,7 +90,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [bio, setBio] = useState("Trying new hobbies and making campus friends.");
   const [identity, setIdentity] = useState("University student");
   const [university, setUniversity] = useState("UC Irvine");
-  const [ageRange, setAgeRange] = useState("18-24");
+  const [age, setAge] = useState("21");
   const [selectedTags, setSelectedTags] = useState<string[]>(["#coffee", "#photography"]);
   const [tagQuery, setTagQuery] = useState("");
   const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
@@ -196,12 +197,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setNotice("Using test mode. Backend auth is bypassed.");
   }
 
-  function prepareSignup(email: string, password: string) {
-    setPendingSignupEmail(email.trim());
-    setPendingSignupPassword(password);
-    setAuthError("");
-  }
-
   async function refreshSession() {
     const currentSession = await getCurrentSession();
     setSession(currentSession);
@@ -225,7 +220,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setDisplayName(appFields.displayName);
     setBio(appFields.bio);
     setIdentity(appFields.identity);
-    setAgeRange(appFields.ageRange);
+    setAge(appFields.age);
     setUniversity(appFields.university);
   }
 
@@ -250,8 +245,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setAuthError("Display name cannot be blank.");
       return;
     }
-    if (!ageRange.trim()) {
-      setAuthError("Age range cannot be blank.");
+    if (!isWholeNumber(age)) {
+      setAuthError("Age must be a whole number.");
       return;
     }
 
@@ -274,7 +269,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }
 
       if (!nextSession) {
-        setAuthError("Account created. Check your email to confirm it, then log in.");
+        setDevBypassAuth(true);
+        setNotice("Account created. Continuing in test mode.");
         return;
       }
 
@@ -284,7 +280,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         displayName,
         bio,
         identity,
-        ageRange,
+        age,
         university
       });
       setProfile(nextProfile);
@@ -312,7 +308,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }
 
   const value: AppContextValue = {
-    ageRange,
+    age,
     authError,
     authLoading,
     bio,
@@ -344,12 +340,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     createTagFromQuery,
     enterDevBypass,
     joinCommunity,
-    prepareSignup,
     removeTag,
-    setAgeRange,
+    setAge,
     setBio,
     setDisplayName,
     setIdentity,
+    setPendingSignupEmail,
+    setPendingSignupPassword,
     setSelectedTags,
     setTagQuery,
     setUniversity,
@@ -366,6 +363,10 @@ function getErrorMessage(error: unknown) {
     return error.message;
   }
   return "Something went wrong.";
+}
+
+function isWholeNumber(value: string) {
+  return /^\d+$/.test(value.trim());
 }
 
 export function useAppContext() {

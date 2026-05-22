@@ -20,8 +20,7 @@ export function LoginRoute({ navigation }: LoginRouteProps) {
       onLogin={(email, password) => {
         void handleLogin(email, password);
       }}
-      onCreateAccount={(email, password) => {
-        app.prepareSignup(email, password);
+      onCreateAccount={() => {
         navigation.navigate("Setup");
       }}
       onDevBypass={app.enterDevBypass}

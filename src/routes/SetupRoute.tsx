@@ -14,14 +14,18 @@ export function SetupRoute({ navigation }: SetupRouteProps) {
       displayName={app.displayName}
       identity={app.identity}
       university={app.university}
-      ageRange={app.ageRange}
+      age={app.age}
       selectedTags={app.selectedTags}
       authError={app.authError}
       authLoading={app.authLoading}
+      signupEmail={app.pendingSignupEmail}
+      signupPassword={app.pendingSignupPassword}
       onDisplayName={app.setDisplayName}
       onIdentity={app.setIdentity}
       onUniversity={app.setUniversity}
-      onAgeRange={app.setAgeRange}
+      onAge={app.setAge}
+      onSignupEmail={app.setPendingSignupEmail}
+      onSignupPassword={app.setPendingSignupPassword}
       onSelectedTags={app.setSelectedTags}
       onEnterApp={() => {
         void app.signUpAndCreateProfile();

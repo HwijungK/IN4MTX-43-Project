@@ -125,7 +125,7 @@ Create account
 -> Main tabs after profile is saved
 ```
 
-If email confirmation is enabled in Supabase Auth settings, signup may stop after account creation and ask the user to confirm their email before the profile row can be saved. For class/demo speed, you can disable email confirmation in:
+If email confirmation is enabled in Supabase Auth settings, Supabase may create the account without returning a signed-in session. In that case the app continues into the UI in test mode, but the profile row cannot be saved until the user has a real session. For class/demo speed, you can disable email confirmation in:
 
 ```text
 Supabase Dashboard -> Authentication -> Providers -> Email

@@ -12,14 +12,14 @@ export function ProfileRoute() {
         bio={app.bio}
         identity={app.identity}
         university={app.university}
-        ageRange={app.ageRange}
+        age={app.age}
         selectedTags={app.selectedTags}
         notice={app.notice}
         onDisplayName={app.setDisplayName}
         onBio={app.setBio}
         onIdentity={app.setIdentity}
         onUniversity={app.setUniversity}
-        onAgeRange={app.setAgeRange}
+        onAge={app.setAge}
         onRemoveTag={app.removeTag}
         onSignOut={() => {
           void app.signOut();
