@@ -10,13 +10,15 @@ type LoginScreenProps = {
   authLoading: boolean;
   onLogin: (email: string, password: string) => void;
   onCreateAccount: (email: string, password: string) => void;
+  onDevBypass: () => void;
 };
 
 export function LoginScreen({
   authError,
   authLoading,
   onLogin,
-  onCreateAccount
+  onCreateAccount,
+  onDevBypass
 }: LoginScreenProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,6 +62,7 @@ export function LoginScreen({
           onPress={() => onCreateAccount(email, password)}
           disabled={disableActions}
         />
+        <SecondaryButton label="Continue in test mode" onPress={onDevBypass} disabled={authLoading} />
       </View>
     </Screen>
   );

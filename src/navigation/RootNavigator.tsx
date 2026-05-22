@@ -25,7 +25,9 @@ export function RootNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!app.session ? (
+        {app.devBypassAuth ? (
+          <Stack.Screen name="Main" component={MainTabs} />
+        ) : !app.session ? (
           <>
             <Stack.Screen name="Login" component={LoginRoute} />
             <Stack.Screen name="Setup" component={SetupRoute} />

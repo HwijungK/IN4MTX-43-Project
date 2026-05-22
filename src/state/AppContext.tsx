@@ -37,6 +37,7 @@ type AppContextValue = {
   chatMessages: typeof chatMessages;
   communities: typeof communities;
   displayName: string;
+  devBypassAuth: boolean;
   filteredTags: Interest[];
   friends: NearbyUser[];
   identity: string;
@@ -57,6 +58,7 @@ type AppContextValue = {
   addTag: (label: string) => void;
   blockUser: (id: string) => void;
   createTagFromQuery: () => void;
+  enterDevBypass: () => void;
   joinCommunity: (community: Community) => void;
   prepareSignup: (email: string, password: string) => void;
   removeTag: (tag: string) => void;
@@ -78,6 +80,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [sessionReady, setSessionReady] = useState(false);
   const [profile, setProfile] = useState<ProfileRow | null>(null);
+  const [devBypassAuth, setDevBypassAuth] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
   const [pendingSignupEmail, setPendingSignupEmail] = useState("");
@@ -187,6 +190,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSelectedTags((current) => current.filter((item) => item !== tag));
   }
 
+  function enterDevBypass() {
+    setDevBypassAuth(true);
+    setAuthError("");
+    setNotice("Using test mode. Backend auth is bypassed.");
+  }
+
   function prepareSignup(email: string, password: string) {
     setPendingSignupEmail(email.trim());
     setPendingSignupPassword(password);
@@ -294,6 +303,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       await signOutOfSupabase();
       setSession(null);
       setProfile(null);
+      setDevBypassAuth(false);
     } catch (error) {
       setAuthError(getErrorMessage(error));
     } finally {
@@ -311,6 +321,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     chatMessages,
     communities,
     displayName,
+    devBypassAuth,
     filteredTags,
     friends,
     identity,
@@ -331,6 +342,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addTag,
     blockUser,
     createTagFromQuery,
+    enterDevBypass,
     joinCommunity,
     prepareSignup,
     removeTag,

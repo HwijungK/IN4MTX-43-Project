@@ -24,6 +24,7 @@ export function LoginRoute({ navigation }: LoginRouteProps) {
         app.prepareSignup(email, password);
         navigation.navigate("Setup");
       }}
+      onDevBypass={app.enterDevBypass}
     />
   );
 }
