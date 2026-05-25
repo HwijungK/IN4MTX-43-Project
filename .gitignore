@@ -1,6 +1,8 @@
 node_modules/
 .expo/
 dist/
+.test-build/
+.coverage-build/
 npm-debug.log*
 .env
 .env.local

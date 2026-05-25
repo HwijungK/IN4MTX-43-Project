@@ -46,6 +46,7 @@ import {
   upsertProfile
 } from "../services/profileService";
 import type { ProfileRow } from "../services/profileService";
+import { normalizeInterestLabel } from "../utils/interestUtils";
 
 type AppContextValue = {
   age: string;
@@ -575,16 +576,6 @@ function getErrorMessage(error: unknown) {
 
 function isWholeNumber(value: string) {
   return /^\d+$/.test(value.trim());
-}
-
-function normalizeInterestLabel(label: string) {
-  const slug = label
-    .trim()
-    .replace(/^#/, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9_]+/g, "_")
-    .replace(/^_+|_+$/g, "");
-  return `#${slug}`;
 }
 
 export function useAppContext() {
