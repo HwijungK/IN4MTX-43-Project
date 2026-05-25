@@ -10,7 +10,7 @@ TODO.
 
 #### Snapshot 2
 
-Last updated: 2026-05-25 (commit 0f919ff + working tree changes)
+Last updated: 2026-05-25 (commit 0f919ff, uncommitted working tree snapshot)
 
 Available tests:
 
@@ -113,7 +113,7 @@ Approximate runtimes:
 
 #### Snapshot 2
 
-Last updated: 2026-05-25 (commit 0f919ff + working tree changes)
+Last updated: 2026-05-25 (commit 0f919ff, uncommitted working tree snapshot)
 
 | Test type | Tool | Coverage % |
 |---|---|---:|
