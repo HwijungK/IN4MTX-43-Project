@@ -16,12 +16,21 @@ mkdirSync(implementationV8Dir, { recursive: true });
 
 run("npm", ["run", "test:build", "--", "--pretty", "false"]);
 run("npm", ["run", "coverage:build", "--", "--pretty", "false"]);
+run("npm", ["run", "test:prepare"]);
 run("node", ["--test", ".test-build/tests/unit/coreUtils.test.js"], {
   NODE_V8_COVERAGE: unitV8Dir
 });
-run("node", ["--test", ".test-build/tests/implementation/socialFlows.test.js"], {
-  NODE_V8_COVERAGE: implementationV8Dir
-});
+run(
+  "node",
+  [
+    "--test",
+    ".test-build/tests/implementation/socialFlows.test.js",
+    ".test-build/tests/implementation/uiElements.test.js"
+  ],
+  {
+    NODE_V8_COVERAGE: implementationV8Dir
+  }
+);
 
 const sourceFiles = collectSourceFiles();
 const unitCoveredByFile = collectCoveredLinesByFile(unitV8Dir);

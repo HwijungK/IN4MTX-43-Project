@@ -11,8 +11,9 @@
     "typecheck": "tsc --noEmit",
     "test:build": "tsc --project tsconfig.test.json",
     "coverage:build": "tsc --project tsconfig.coverage.json",
-    "test:unit": "npm run test:build -- --pretty false && node --test .test-build/tests/unit/coreUtils.test.js",
-    "test:implementation": "npm run test:build -- --pretty false && node --test .test-build/tests/implementation/socialFlows.test.js",
+    "test:prepare": "node scripts/prepare-test-runtime.mjs",
+    "test:unit": "npm run test:build -- --pretty false && npm run test:prepare && node --test .test-build/tests/unit/coreUtils.test.js",
+    "test:implementation": "npm run test:build -- --pretty false && npm run test:prepare && node --test .test-build/tests/implementation/socialFlows.test.js .test-build/tests/implementation/uiElements.test.js",
     "test": "npm run test:unit && npm run test:implementation",
     "test:coverage": "node scripts/generate-coverage-report.mjs"
   },

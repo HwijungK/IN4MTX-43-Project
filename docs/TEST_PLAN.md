@@ -8,6 +8,41 @@ TODO.
 
 ### 2.3 Tests By Category
 
+#### Snapshot 2
+
+Last updated: 2026-05-25 (commit 0f919ff + working tree changes)
+
+Available tests:
+
+```text
+Unit tests: 6
+Implementation tests: 12
+Total tests: 18
+```
+
+| Category | Test |
+|---|---|
+| Unit | `unit: normalizes typed interest labels to database-safe tags` |
+| Unit | `unit: preserves valid lowercase hashtag labels` |
+| Unit | `unit: accepts whole-number age input` |
+| Unit | `unit: rejects decimal age input` |
+| Unit | `unit: returns expected short university badge label` |
+| Unit | `unit: exposes core style tokens used by the app shell` |
+| Implementation | `implementation: new typed interest produces interest insert data` |
+| Implementation | `implementation: existing interest produces user_interests insert data` |
+| Implementation | `implementation: suggested friend add maps UI user to accepted friendship row` |
+| Implementation | `implementation: public community join writes to community_members` |
+| Implementation | `implementation: request-only community join writes pending request` |
+| Implementation | `implementation: button components render valid pressable elements` |
+| Implementation | `implementation: form and layout components render valid elements` |
+| Implementation | `implementation: notice and screen wrappers handle empty and populated states` |
+| Implementation | `implementation: tag picker and tag row render tag collections` |
+| Implementation | `implementation: communities screen renders public and request community actions` |
+| Implementation | `implementation: map screen renders users, groups, and campus tag actions` |
+| Implementation | `implementation: profile screen renders saved profile fields and actions` |
+
+#### Snapshot 1
+
 Last updated: 2026-05-25 (commit 0f919ff)
 
 Available tests:
@@ -33,8 +68,6 @@ Total tests: 10
 
 ### 2.4 Where The Tests Live + How To Run Them
 
-Last updated: 2026-05-25 (commit 0f919ff)
-
 Test files:
 
 ```text
@@ -43,6 +76,7 @@ tests/
     coreUtils.test.ts
   implementation/
     socialFlows.test.ts
+    uiElements.test.ts
 ```
 
 Supporting test/build files:
@@ -66,16 +100,45 @@ npm run test:coverage
 npm run typecheck
 ```
 
-Approximate runtimes from the current local snapshot:
+Approximate runtimes:
 
 | Category | Command | Time | Where it runs |
 |---|---:|---:|---|
 | Unit | `npm run test:unit` | ~0.04s after TypeScript build | local |
-| Implementation | `npm run test:implementation` | ~0.03s after TypeScript build | local |
-| All tests | `npm test` | ~0.8-1.1s total | local |
-| Coverage | `npm run test:coverage` | ~1.2s total | local |
+| Implementation | `npm run test:implementation` | ~0.04s after TypeScript build | local |
+| All tests | `npm test` | ~1.3s total | local |
+| Coverage | `npm run test:coverage` | ~1.4s total | local |
 
 ### 2.5 Coverage Achieved
+
+#### Snapshot 2
+
+Last updated: 2026-05-25 (commit 0f919ff + working tree changes)
+
+| Test type | Tool | Coverage % |
+|---|---|---:|
+| Unit | Node `node:test` + V8 coverage via `npm run test:coverage` | 33.82% |
+| Implementation | Node `node:test` + V8 coverage via `npm run test:coverage` | 40.81% |
+| Combined overall | Custom V8 coverage report over full compiled `src/` tree | 40.87% |
+
+Coverage snapshot:
+
+```text
+Unit covered lines: 537 / 1588
+Unit line coverage: 33.82%
+Implementation covered lines: 648 / 1588
+Implementation line coverage: 40.81%
+Combined covered lines: 649 / 1588
+Combined line coverage: 40.87%
+HTML report: coverage/index.html
+JSON summary: coverage/coverage-summary.json
+```
+
+What is not covered yet:
+
+The current tests still do not cover most hook-heavy screens, navigation flows, live Supabase service calls, AppContext state transitions, auth/session edge cases, realtime chat behavior, or end-to-end Expo/mobile flows. The new snapshot raises coverage by testing pure helpers, database-write shape logic, presentational components, and non-hook screen render functions with a test-time React Native stub.
+
+#### Snapshot 1
 
 Last updated: 2026-05-25 (commit 0f919ff)
 

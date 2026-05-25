@@ -8,7 +8,7 @@ Use these commands from the repository root.
 npm run test:unit
 ```
 
-Runs 5 unit tests in `tests/unit/`.
+Runs the unit tests in `tests/unit/`.
 
 ## Implementation Tests
 
@@ -16,7 +16,7 @@ Runs 5 unit tests in `tests/unit/`.
 npm run test:implementation
 ```
 
-Runs 5 implementation tests in `tests/implementation/`.
+Runs the implementation tests in `tests/implementation/`.
 
 ## All Tests
 
@@ -32,7 +32,7 @@ Runs the unit test suite first, then the implementation test suite.
 npm run test:coverage
 ```
 
-Runs all 10 tests with V8 coverage enabled and writes:
+Runs all tests with V8 coverage enabled and writes:
 
 - `coverage/index.html`
 - `coverage/coverage-summary.json`
