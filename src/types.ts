@@ -11,6 +11,7 @@ export type Interest = {
 
 export type NearbyUser = {
   id: string;
+  profileId?: string;
   name: string;
   age: number;
   distance: string;
@@ -51,6 +52,7 @@ export type ChatMessage = {
 
 export type Community = {
   id: string;
+  communityId?: string;
   name: string;
   tag: string;
   distance: string;

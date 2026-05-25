@@ -12,7 +12,7 @@ type FriendsScreenProps = {
   friends: NearbyUser[];
   suggestedFriends: NearbyUser[];
   notice: string;
-  onAddFriend: (user: NearbyUser) => void;
+  onAddFriend: (user: NearbyUser) => Promise<void>;
 };
 
 export function FriendsScreen({
@@ -69,7 +69,7 @@ export function FriendsScreen({
       <Text style={styles.sectionTitle}>Suggested friends</Text>
       {filteredSuggestions.length ? (
         filteredSuggestions.map((user) => (
-          <PersonCard key={user.id} user={user} actionLabel="Add" onAction={() => onAddFriend(user)} />
+          <PersonCard key={user.id} user={user} actionLabel="Add" onAction={() => void onAddFriend(user)} />
         ))
       ) : (
         <View style={styles.emptyState}>

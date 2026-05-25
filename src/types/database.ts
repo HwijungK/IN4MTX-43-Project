@@ -26,7 +26,8 @@ export type Database = {
           display_name: string;
           bio: string | null;
           identity_group: string;
-          age: number;
+          age?: number | null;
+          age_range?: string | null;
           university_id: string | null;
           verified_university: boolean;
           avatar_url: string | null;
@@ -38,7 +39,8 @@ export type Database = {
           display_name: string;
           bio?: string | null;
           identity_group: string;
-          age: number;
+          age?: number | null;
+          age_range?: string | null;
           university_id?: string | null;
           verified_university?: boolean;
           avatar_url?: string | null;
@@ -63,6 +65,72 @@ export type Database = {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["interests"]["Insert"]>;
+      };
+      user_interests: {
+        Row: {
+          user_id: string;
+          interest_id: string;
+          created_at: string;
+        };
+        Insert: {
+          user_id: string;
+          interest_id: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["user_interests"]["Insert"]>;
+      };
+      friendships: {
+        Row: {
+          id: string;
+          requester_id: string;
+          addressee_id: string;
+          status: Database["public"]["Enums"]["friendship_status"];
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          requester_id: string;
+          addressee_id: string;
+          status?: Database["public"]["Enums"]["friendship_status"];
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["friendships"]["Insert"]>;
+      };
+      community_members: {
+        Row: {
+          community_id: string;
+          user_id: string;
+          role: Database["public"]["Enums"]["community_role"];
+          joined_at: string;
+        };
+        Insert: {
+          community_id: string;
+          user_id: string;
+          role?: Database["public"]["Enums"]["community_role"];
+          joined_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["community_members"]["Insert"]>;
+      };
+      community_join_requests: {
+        Row: {
+          id: string;
+          community_id: string;
+          user_id: string;
+          status: "pending" | "approved" | "denied";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          community_id: string;
+          user_id: string;
+          status?: "pending" | "approved" | "denied";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["community_join_requests"]["Insert"]>;
       };
     };
     Views: Record<string, never>;

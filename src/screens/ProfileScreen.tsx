@@ -1,10 +1,10 @@
 import { Pressable, Text, View } from "react-native";
 
-import { SecondaryButton } from "../components/Button";
+import { PrimaryButton, SecondaryButton } from "../components/Button";
 import { ChoiceChips } from "../components/ChoiceChips";
 import { Field } from "../components/Field";
 import { Notice } from "../components/Notice";
-import { identityGroups, universities } from "../data/mockData";
+import { identityGroups } from "../data/mockData";
 import { styles } from "../styles";
 import { shortUniversity } from "../utils/format";
 
@@ -13,15 +13,19 @@ type ProfileScreenProps = {
   bio: string;
   identity: string;
   university: string;
+  universityChoices: string[];
   age: string;
   selectedTags: string[];
   notice: string;
+  authError: string;
+  authLoading: boolean;
   onDisplayName: (value: string) => void;
   onBio: (value: string) => void;
   onIdentity: (value: string) => void;
   onUniversity: (value: string) => void;
   onAge: (value: string) => void;
   onRemoveTag: (tag: string) => void;
+  onSaveProfile: () => void;
   onSignOut?: () => void;
 };
 
@@ -30,17 +34,23 @@ export function ProfileScreen({
   bio,
   identity,
   university,
+  universityChoices,
   age,
   selectedTags,
   notice,
+  authError,
+  authLoading,
   onDisplayName,
   onBio,
   onIdentity,
   onUniversity,
   onAge,
   onRemoveTag,
+  onSaveProfile,
   onSignOut
 }: ProfileScreenProps) {
+  const ageIsInvalid = age.length > 0 && !isWholeNumber(age);
+
   return (
     <>
       <View style={styles.profileHeader}>
@@ -63,8 +73,9 @@ export function ProfileScreen({
       <Text style={styles.sectionTitle}>Identity group</Text>
       <ChoiceChips choices={identityGroups} selected={identity} onSelect={onIdentity} />
       <Text style={styles.sectionTitle}>University badge</Text>
-      <ChoiceChips choices={universities} selected={university} onSelect={onUniversity} />
+      <ChoiceChips choices={universityChoices} selected={university} onSelect={onUniversity} />
       <Field label="Age" value={age} onChangeText={onAge} keyboardType="number-pad" />
+      {ageIsInvalid ? <Text style={styles.errorText}>Age must be a whole number.</Text> : null}
       <Text style={styles.sectionTitle}>Profile interests</Text>
       <View style={styles.tagWrap}>
         {selectedTags.map((tag) => (
@@ -84,7 +95,17 @@ export function ProfileScreen({
           <Text style={styles.mediaText}>Add</Text>
         </View>
       </View>
-      {onSignOut ? <SecondaryButton label="Sign out" onPress={onSignOut} /> : null}
+      {authError ? <Text style={styles.errorText}>{authError}</Text> : null}
+      <PrimaryButton
+        label={authLoading ? "Saving..." : "Save profile"}
+        onPress={onSaveProfile}
+        disabled={authLoading || !displayName.trim() || !isWholeNumber(age)}
+      />
+      {onSignOut ? <SecondaryButton label="Sign out" onPress={onSignOut} disabled={authLoading} /> : null}
     </>
   );
+}
+
+function isWholeNumber(value: string) {
+  return /^\d+$/.test(value.trim());
 }

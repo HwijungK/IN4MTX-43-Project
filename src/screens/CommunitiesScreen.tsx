@@ -7,7 +7,7 @@ import type { Community } from "../types";
 type CommunitiesScreenProps = {
   communities: Community[];
   joinedCommunities: string[];
-  onJoin: (community: Community) => void;
+  onJoin: (community: Community) => Promise<void>;
 };
 
 export function CommunitiesScreen({
@@ -30,7 +30,7 @@ export function CommunitiesScreen({
               </View>
               <SmallButton
                 label={joined ? "Joined" : community.privacy === "Request" ? "Request" : "Join"}
-                onPress={() => onJoin(community)}
+                onPress={() => void onJoin(community)}
               />
             </View>
             <Text style={styles.bodyText}>{community.announcement}</Text>

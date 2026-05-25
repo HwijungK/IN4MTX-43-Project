@@ -7,14 +7,17 @@ import { Field } from "../components/Field";
 import { Header } from "../components/Header";
 import { Screen } from "../components/Screen";
 import { TagPicker } from "../components/Tags";
-import { identityGroups, universities } from "../data/mockData";
+import { identityGroups } from "../data/mockData";
 import { styles } from "../styles";
+import type { Interest } from "../types";
 
 type SetupScreenProps = {
   displayName: string;
   identity: string;
   university: string;
+  universityChoices: string[];
   age: string;
+  interestChoices: Interest[];
   selectedTags: string[];
   authError: string;
   authLoading: boolean;
@@ -35,7 +38,9 @@ export function SetupScreen({
   displayName,
   identity,
   university,
+  universityChoices,
   age,
+  interestChoices,
   selectedTags,
   authError,
   authLoading,
@@ -99,11 +104,12 @@ export function SetupScreen({
       <Text style={styles.sectionTitle}>Who are you?</Text>
       <ChoiceChips choices={identityGroups} selected={identity} onSelect={onIdentity} />
       <Text style={styles.sectionTitle}>University</Text>
-      <ChoiceChips choices={universities} selected={university} onSelect={onUniversity} />
+      <ChoiceChips choices={universityChoices} selected={university} onSelect={onUniversity} />
       <Field label="Age" value={age} onChangeText={onAge} keyboardType="number-pad" />
       {ageIsInvalid ? <Text style={styles.errorText}>Age must be a whole number.</Text> : null}
       <Text style={styles.sectionTitle}>Starter interests</Text>
       <TagPicker
+        interests={interestChoices}
         selectedTags={selectedTags}
         onToggle={(tag) =>
           onSelectedTags((current) =>

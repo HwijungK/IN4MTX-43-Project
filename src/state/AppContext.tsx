@@ -7,10 +7,22 @@ import {
   chatMessages,
   communities,
   interests,
+  universities as fallbackUniversities,
   nearbyGroups,
   nearbyUsers
 } from "../data/mockData";
-import type { Community, Interest, NearbyGroup, NearbyUser } from "../types";
+import type { Chat, ChatMessage, Community, Interest, NearbyGroup, NearbyUser } from "../types";
+import {
+  getDemoChatMessages,
+  getDemoChats,
+  getDemoCommunities,
+  getDemoFriendIds,
+  getDemoInterests,
+  getDemoJoinedCommunityIds,
+  getDemoNearbyGroups,
+  getDemoNearbyUsers,
+  getDemoSelectedTags
+} from "../services/demoDataService";
 import {
   getCurrentSession,
   onAuthSessionChange,
@@ -19,7 +31,15 @@ import {
   signUpWithEmail
 } from "../services/authService";
 import {
+  addAcceptedFriend,
+  addInterestToProfile,
+  getProfileInterestLabels,
+  joinPublicCommunity,
+  requestCommunityJoin
+} from "../services/socialService";
+import {
   getProfile,
+  getUniversities,
   getUniversityById,
   getUniversityByName,
   profileToAppFields,
@@ -33,14 +53,15 @@ type AppContextValue = {
   authLoading: boolean;
   bio: string;
   blockedUsers: string[];
-  chats: typeof chats;
-  chatMessages: typeof chatMessages;
-  communities: typeof communities;
+  chats: Chat[];
+  chatMessages: ChatMessage[];
+  communities: Community[];
   displayName: string;
   devBypassAuth: boolean;
   filteredTags: Interest[];
   friends: NearbyUser[];
   identity: string;
+  interestChoices: Interest[];
   joinedCommunities: string[];
   nearbyGroups: NearbyGroup[];
   notice: string;
@@ -53,13 +74,14 @@ type AppContextValue = {
   suggestedFriends: NearbyUser[];
   tagQuery: string;
   university: string;
+  universityChoices: string[];
   visibleUsers: NearbyUser[];
-  addFriend: (user: NearbyUser) => void;
-  addTag: (label: string) => void;
+  addFriend: (user: NearbyUser) => Promise<void>;
+  addTag: (label: string) => Promise<void>;
   blockUser: (id: string) => void;
-  createTagFromQuery: () => void;
+  createTagFromQuery: () => Promise<void>;
   enterDevBypass: () => void;
-  joinCommunity: (community: Community) => void;
+  joinCommunity: (community: Community) => Promise<void>;
   setPendingSignupEmail: (value: string) => void;
   setPendingSignupPassword: (value: string) => void;
   removeTag: (tag: string) => void;
@@ -70,6 +92,7 @@ type AppContextValue = {
   setSelectedTags: (updater: (current: string[]) => string[]) => void;
   setTagQuery: (value: string) => void;
   setUniversity: (value: string) => void;
+  saveProfile: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   signUpAndCreateProfile: () => Promise<void>;
@@ -90,12 +113,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [bio, setBio] = useState("Trying new hobbies and making campus friends.");
   const [identity, setIdentity] = useState("University student");
   const [university, setUniversity] = useState("UC Irvine");
+  const [universityChoices, setUniversityChoices] = useState<string[]>(fallbackUniversities);
   const [age, setAge] = useState("21");
-  const [selectedTags, setSelectedTags] = useState<string[]>(["#coffee", "#photography"]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagQuery, setTagQuery] = useState("");
   const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
-  const [friendIds, setFriendIds] = useState<string[]>(["maya", "jordan", "nina"]);
-  const [joinedCommunities, setJoinedCommunities] = useState<string[]>(["third-place"]);
+  const [interestChoices, setInterestChoices] = useState<Interest[]>(interests);
+  const [nearbyUserRows, setNearbyUserRows] = useState<NearbyUser[]>(nearbyUsers);
+  const [nearbyGroupRows, setNearbyGroupRows] = useState<NearbyGroup[]>(nearbyGroups);
+  const [chatRows, setChatRows] = useState<Chat[]>(chats);
+  const [chatMessageRows, setChatMessageRows] = useState<ChatMessage[]>(chatMessages);
+  const [communityRows, setCommunityRows] = useState<Community[]>(communities);
+  const [friendIds, setFriendIds] = useState<string[]>([]);
+  const [joinedCommunities, setJoinedCommunities] = useState<string[]>([]);
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
@@ -128,6 +158,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       });
     });
     void loadSession();
+    void loadUniversityChoices();
+    void loadDemoRows();
 
     return () => {
       isMounted = false;
@@ -135,40 +167,74 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const visibleUsers = nearbyUsers.filter((user) => !blockedUsers.includes(user.id));
+  const visibleUsers = nearbyUserRows.filter((user) => !blockedUsers.includes(user.id));
   const friends = visibleUsers.filter((user) => friendIds.includes(user.id));
   const suggestedFriends = visibleUsers.filter((user) => !friendIds.includes(user.id));
 
   const filteredTags = useMemo(() => {
     const query = tagQuery.trim().toLowerCase();
     if (!query) {
-      return interests;
+      return interestChoices;
     }
-    return interests.filter((interest) => interest.label.toLowerCase().includes(query));
-  }, [tagQuery]);
+    return interestChoices.filter((interest) => interest.label.toLowerCase().includes(query));
+  }, [interestChoices, tagQuery]);
 
-  function addTag(label: string) {
-    if (selectedTags.includes(label)) {
-      setNotice(`${label} is already on your profile.`);
+  async function addTag(label: string) {
+    const normalized = normalizeInterestLabel(label);
+    if (normalized === "#") {
+      setNotice("Tags need at least one letter or number.");
       return;
     }
-    setSelectedTags((current) => [...current, label]);
-    setNotice(`${label} added to your profile.`);
+    if (selectedTags.includes(normalized)) {
+      setNotice(`${normalized} is already on your profile.`);
+      return;
+    }
+
+    if (devBypassAuth || !session?.user.id) {
+      setSelectedTags((current) => [...current, normalized]);
+      setNotice(`${normalized} added locally in test mode.`);
+      return;
+    }
+
+    try {
+      const savedLabel = await addInterestToProfile(session.user.id, normalized);
+      setSelectedTags((current) => (current.includes(savedLabel) ? current : [...current, savedLabel]));
+      setNotice(`${savedLabel} added to your profile.`);
+    } catch (error) {
+      setAuthError(getErrorMessage(error));
+    }
   }
 
-  function createTagFromQuery() {
+  async function createTagFromQuery() {
     const cleaned = tagQuery.trim().replace(/^#/, "").toLowerCase();
     if (!cleaned) {
       setNotice("Tags cannot be blank.");
       return;
     }
-    addTag(`#${cleaned}`);
+
+    await addTag(`#${cleaned}`);
     setTagQuery("");
   }
 
-  function addFriend(user: NearbyUser) {
-    setFriendIds((current) => (current.includes(user.id) ? current : [...current, user.id]));
-    setNotice(`${user.name} was added to your friends.`);
+  async function addFriend(user: NearbyUser) {
+    if (friendIds.includes(user.id)) {
+      setNotice(`${user.name} is already in your friends.`);
+      return;
+    }
+
+    if (devBypassAuth || !session?.user.id || !user.profileId) {
+      setFriendIds((current) => (current.includes(user.id) ? current : [...current, user.id]));
+      setNotice(`${user.name} was added locally in test mode.`);
+      return;
+    }
+
+    try {
+      await addAcceptedFriend(session.user.id, user.profileId);
+      setFriendIds((current) => (current.includes(user.id) ? current : [...current, user.id]));
+      setNotice(`${user.name} was added to your friends.`);
+    } catch (error) {
+      setAuthError(getErrorMessage(error));
+    }
   }
 
   function blockUser(id: string) {
@@ -176,15 +242,43 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setNotice("User removed from map and proximity chats.");
   }
 
-  function joinCommunity(community: Community) {
-    if (community.privacy === "Request") {
-      setNotice(`Request sent to ${community.name}.`);
+  async function joinCommunity(community: Community) {
+    if (joinedCommunities.includes(community.id)) {
+      setNotice(`You are already in ${community.name}.`);
       return;
     }
-    setJoinedCommunities((current) =>
-      current.includes(community.id) ? current : [...current, community.id]
-    );
-    setNotice(`Joined ${community.name}.`);
+
+    if (devBypassAuth || !session?.user.id || !community.communityId) {
+      if (community.privacy === "Request") {
+        setNotice(`Request sent to ${community.name} locally in test mode.`);
+        return;
+      }
+      setJoinedCommunities((current) =>
+        current.includes(community.id) ? current : [...current, community.id]
+      );
+      setNotice(`Joined ${community.name} locally in test mode.`);
+      return;
+    }
+
+    if (community.privacy === "Request") {
+      try {
+        await requestCommunityJoin(session.user.id, community.communityId);
+        setNotice(`Request sent to ${community.name}.`);
+      } catch (error) {
+        setAuthError(getErrorMessage(error));
+      }
+      return;
+    }
+
+    try {
+      await joinPublicCommunity(session.user.id, community.communityId);
+      setJoinedCommunities((current) =>
+        current.includes(community.id) ? current : [...current, community.id]
+      );
+      setNotice(`Joined ${community.name}.`);
+    } catch (error) {
+      setAuthError(getErrorMessage(error));
+    }
   }
 
   function removeTag(tag: string) {
@@ -222,6 +316,77 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setIdentity(appFields.identity);
     setAge(appFields.age);
     setUniversity(appFields.university);
+
+    const interestLabels = await getProfileInterestLabels(userId);
+    setSelectedTags(interestLabels);
+  }
+
+  async function loadUniversityChoices() {
+    try {
+      const rows = await getUniversities();
+      const names = rows.map((row) => row.name);
+      if (names.length) {
+        setUniversityChoices(names);
+      }
+    } catch (error) {
+      setAuthError(getErrorMessage(error));
+    }
+  }
+
+  async function loadDemoRows() {
+    try {
+      const [
+        nextInterests,
+        nextNearbyUsers,
+        nextNearbyGroups,
+        nextChats,
+        nextChatMessages,
+        nextCommunities,
+        nextFriendIds,
+        nextSelectedTags,
+        nextJoinedCommunityIds
+      ] = await Promise.all([
+        getDemoInterests(),
+        getDemoNearbyUsers(),
+        getDemoNearbyGroups(),
+        getDemoChats(),
+        getDemoChatMessages(),
+        getDemoCommunities(),
+        getDemoFriendIds(),
+        getDemoSelectedTags(),
+        getDemoJoinedCommunityIds()
+      ]);
+
+      if (nextInterests.length) {
+        setInterestChoices(nextInterests);
+      }
+      if (nextNearbyUsers.length) {
+        setNearbyUserRows(nextNearbyUsers);
+      }
+      if (nextNearbyGroups.length) {
+        setNearbyGroupRows(nextNearbyGroups);
+      }
+      if (nextChats.length) {
+        setChatRows(nextChats);
+      }
+      if (nextChatMessages.length) {
+        setChatMessageRows(nextChatMessages);
+      }
+      if (nextCommunities.length) {
+        setCommunityRows(nextCommunities);
+      }
+      if (nextFriendIds.length) {
+        setFriendIds(nextFriendIds);
+      }
+      if (nextSelectedTags.length) {
+        setSelectedTags(nextSelectedTags);
+      }
+      if (nextJoinedCommunityIds.length) {
+        setJoinedCommunities(nextJoinedCommunityIds);
+      }
+    } catch {
+      // Demo rows are loaded from an optional seed script; keep auth usable if they are absent.
+    }
   }
 
   async function signIn(email: string, password: string) {
@@ -283,6 +448,42 @@ export function AppProvider({ children }: { children: ReactNode }) {
         age,
         university
       });
+      await Promise.all(selectedTags.map((tag) => addInterestToProfile(nextSession.user.id, tag)));
+      setProfile(nextProfile);
+      setNotice("Profile saved.");
+    } catch (error) {
+      setAuthError(getErrorMessage(error));
+    } finally {
+      setAuthLoading(false);
+    }
+  }
+
+  async function saveProfile() {
+    if (!displayName.trim()) {
+      setAuthError("Display name cannot be blank.");
+      return;
+    }
+    if (!isWholeNumber(age)) {
+      setAuthError("Age must be a whole number.");
+      return;
+    }
+
+    setAuthLoading(true);
+    setAuthError("");
+    try {
+      if (devBypassAuth || !session?.user.id) {
+        setNotice("Profile saved locally in test mode.");
+        return;
+      }
+
+      const nextProfile = await upsertProfile({
+        id: session.user.id,
+        displayName,
+        bio,
+        identity,
+        age,
+        university
+      });
       setProfile(nextProfile);
       setNotice("Profile saved.");
     } catch (error) {
@@ -297,12 +498,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setAuthError("");
     try {
       await signOutOfSupabase();
-      setSession(null);
-      setProfile(null);
-      setDevBypassAuth(false);
     } catch (error) {
       setAuthError(getErrorMessage(error));
     } finally {
+      setSession(null);
+      setProfile(null);
+      setDevBypassAuth(false);
       setAuthLoading(false);
     }
   }
@@ -313,16 +514,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     authLoading,
     bio,
     blockedUsers,
-    chats,
-    chatMessages,
-    communities,
+    chats: chatRows,
+    chatMessages: chatMessageRows,
+    communities: communityRows,
     displayName,
     devBypassAuth,
     filteredTags,
     friends,
     identity,
+    interestChoices,
     joinedCommunities,
-    nearbyGroups,
+    nearbyGroups: nearbyGroupRows,
     notice,
     pendingSignupEmail,
     pendingSignupPassword,
@@ -333,6 +535,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     suggestedFriends,
     tagQuery,
     university,
+    universityChoices,
     visibleUsers,
     addFriend,
     addTag,
@@ -350,6 +553,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSelectedTags,
     setTagQuery,
     setUniversity,
+    saveProfile,
     signIn,
     signOut,
     signUpAndCreateProfile
@@ -362,11 +566,25 @@ function getErrorMessage(error: unknown) {
   if (error instanceof Error) {
     return error.message;
   }
+  if (error && typeof error === "object") {
+    const possibleError = error as { error_description?: string; message?: string };
+    return possibleError.message ?? possibleError.error_description ?? "Something went wrong.";
+  }
   return "Something went wrong.";
 }
 
 function isWholeNumber(value: string) {
   return /^\d+$/.test(value.trim());
+}
+
+function normalizeInterestLabel(label: string) {
+  const slug = label
+    .trim()
+    .replace(/^#/, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9_]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  return `#${slug}`;
 }
 
 export function useAppContext() {

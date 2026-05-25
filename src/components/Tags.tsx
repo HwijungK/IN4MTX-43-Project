@@ -1,14 +1,15 @@
 import { Pressable, Text, View } from "react-native";
 
-import { interests } from "../data/mockData";
 import { styles } from "../styles";
+import type { Interest } from "../types";
 
 type TagPickerProps = {
+  interests: Interest[];
   selectedTags: string[];
   onToggle: (tag: string) => void;
 };
 
-export function TagPicker({ selectedTags, onToggle }: TagPickerProps) {
+export function TagPicker({ interests, selectedTags, onToggle }: TagPickerProps) {
   return (
     <View style={styles.tagWrap}>
       {interests.map((interest) => {

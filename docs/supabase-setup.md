@@ -75,6 +75,18 @@ Run the SQL. It creates:
 
 It also enables Row Level Security and creates starter policies.
 
+If you ran an older schema that created `profiles.age_range`, run this migration too:
+
+```text
+supabase/migrate-age-range-to-age.sql
+```
+
+To load the database-backed demo rows for interests, nearby users, chats, communities, and the expanded university list, run:
+
+```text
+supabase/migrate-demo-data.sql
+```
+
 ## 4. Restart Expo
 
 Expo reads environment variables when the dev server starts. After changing `.env`, restart:

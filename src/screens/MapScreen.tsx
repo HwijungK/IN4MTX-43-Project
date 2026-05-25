@@ -16,8 +16,8 @@ type MapScreenProps = {
   tagQuery: string;
   notice: string;
   onTagQuery: (value: string) => void;
-  onAddTag: (tag: string) => void;
-  onCreateTag: () => void;
+  onAddTag: (tag: string) => Promise<void>;
+  onCreateTag: () => Promise<void>;
   onBlock: (id: string) => void;
 };
 
@@ -86,7 +86,7 @@ export function MapScreen({
         placeholderTextColor="#7C756A"
       />
       {filteredTags.map((tag) => (
-        <Pressable key={tag.id} style={styles.tagResult} onPress={() => onAddTag(tag.label)}>
+        <Pressable key={tag.id} style={styles.tagResult} onPress={() => void onAddTag(tag.label)}>
           <Text style={styles.cardTitle}>{tag.label}</Text>
           <Text style={styles.metaText}>
             {tag.subscribers} subscribers | {tag.activeNearby} active on campus
@@ -96,7 +96,10 @@ export function MapScreen({
       {tagQuery.trim() && filteredTags.length === 0 && (
         <View style={styles.emptyState}>
           <Text style={styles.cardTitle}>No campus tags found yet.</Text>
-          <SecondaryButton label={`Add #${tagQuery.trim().replace(/^#/, "")}`} onPress={onCreateTag} />
+          <SecondaryButton
+            label={`Add #${tagQuery.trim().replace(/^#/, "")}`}
+            onPress={() => void onCreateTag()}
+          />
         </View>
       )}
       <Text style={styles.metaText}>Your tags: {selectedTags.join(", ")}</Text>

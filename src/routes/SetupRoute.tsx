@@ -14,7 +14,9 @@ export function SetupRoute({ navigation }: SetupRouteProps) {
       displayName={app.displayName}
       identity={app.identity}
       university={app.university}
+      universityChoices={app.universityChoices}
       age={app.age}
+      interestChoices={app.interestChoices}
       selectedTags={app.selectedTags}
       authError={app.authError}
       authLoading={app.authLoading}
@@ -30,7 +32,12 @@ export function SetupRoute({ navigation }: SetupRouteProps) {
       onEnterApp={() => {
         void app.signUpAndCreateProfile();
       }}
-      onBackToLogin={() => navigation.goBack()}
+      onBackToLogin={() => {
+        void app.signOut();
+        if (navigation.canGoBack()) {
+          navigation.goBack();
+        }
+      }}
     />
   );
 }

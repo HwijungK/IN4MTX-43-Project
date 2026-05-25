@@ -30,8 +30,7 @@ export function LoginScreen({
         <Text style={styles.kicker}>CommonGround</Text>
         <Text style={styles.heroTitle}>Make campus friends through shared interests.</Text>
         <Text style={styles.bodyText}>
-          First draft prototype with local mock data. School login is simulated so we can focus on
-          the campus friendship flow.
+          First draft prototype with Supabase auth and database-backed demo campus data.
         </Text>
         <TextInput
           style={styles.input}

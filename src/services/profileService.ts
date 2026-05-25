@@ -70,23 +70,47 @@ export async function getUniversityById(id: string) {
 
 export async function upsertProfile(input: ProfileInput) {
   const university = await getUniversityByName(input.university);
+  const baseProfile = {
+    id: input.id,
+    display_name: input.displayName.trim(),
+    bio: input.bio.trim() || null,
+    identity_group: toIdentityGroup(input.identity),
+    university_id: university?.id ?? null,
+    verified_university: Boolean(university)
+  };
+  const parsedAge = Number.parseInt(input.age.trim(), 10);
 
   const { data, error } = await supabase
     .from("profiles")
     .upsert(
       {
-        id: input.id,
-        display_name: input.displayName.trim(),
-        bio: input.bio.trim() || null,
-        identity_group: toIdentityGroup(input.identity),
-        age: Number.parseInt(input.age.trim(), 10),
-        university_id: university?.id ?? null,
-        verified_university: Boolean(university)
+        ...baseProfile,
+        age: parsedAge
       },
       { onConflict: "id" }
     )
     .select("*")
     .single();
+
+  if (isMissingAgeColumnError(error)) {
+    const fallback = await supabase
+      .from("profiles")
+      .upsert(
+        {
+          ...baseProfile,
+          age_range: String(parsedAge)
+        },
+        { onConflict: "id" }
+      )
+      .select("*")
+      .single();
+
+    if (fallback.error) {
+      throw fallback.error;
+    }
+
+    return fallback.data;
+  }
 
   if (error) {
     throw error;
@@ -100,9 +124,23 @@ export function profileToAppFields(profile: ProfileRow, university?: UniversityR
     displayName: profile.display_name,
     bio: profile.bio ?? "",
     identity: fromIdentityGroup(profile.identity_group),
-    age: String(profile.age),
+    age: profile.age == null ? profile.age_range ?? "" : String(profile.age),
     university: university?.name ?? "UC Irvine"
   };
+}
+
+function isMissingAgeColumnError(error: unknown) {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+
+  const possibleError = error as { code?: string; message?: string };
+  const message = possibleError.message ?? "";
+  return (
+    (possibleError.code === "42703" && message.includes("profiles.age")) ||
+    (possibleError.code === "PGRST204" && message.includes("'age'")) ||
+    (message.includes("Could not find") && message.includes("'age'") && message.includes("profiles"))
+  );
 }
 
 function toIdentityGroup(identity: string): Database["public"]["Enums"]["identity_group"] {

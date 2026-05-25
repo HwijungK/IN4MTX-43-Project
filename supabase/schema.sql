@@ -248,11 +248,19 @@ create index if not exists blocks_blocked_idx on public.blocks(blocked_id);
 
 insert into public.universities (name, short_name, email_domain)
 values
+  ('UC Berkeley', 'UC Berkeley', 'berkeley.edu'),
+  ('UC Davis', 'UC Davis', 'ucdavis.edu'),
   ('UC Irvine', 'UCI', 'uci.edu'),
   ('UCLA', 'UCLA', 'ucla.edu'),
+  ('UC Merced', 'UC Merced', 'ucmerced.edu'),
+  ('UC Riverside', 'UCR', 'ucr.edu'),
   ('UC San Diego', 'UCSD', 'ucsd.edu'),
-  ('UC Berkeley', 'UC Berkeley', 'berkeley.edu'),
-  ('Cal State Fullerton', 'CSUF', 'fullerton.edu')
+  ('UC San Francisco', 'UCSF', 'ucsf.edu'),
+  ('UC Santa Barbara', 'UCSB', 'ucsb.edu'),
+  ('UC Santa Cruz', 'UCSC', 'ucsc.edu'),
+  ('Cal State Fullerton', 'CSUF', 'fullerton.edu'),
+  ('San Diego State', 'SDSU', 'sdsu.edu'),
+  ('San Jose State', 'SJSU', 'sjsu.edu')
 on conflict (name) do nothing;
 
 alter table public.universities enable row level security;
@@ -275,7 +283,7 @@ alter table public.reports enable row level security;
 drop policy if exists "universities are readable" on public.universities;
 create policy "universities are readable"
 on public.universities for select
-to authenticated
+to anon, authenticated
 using (true);
 
 drop policy if exists "profiles are readable by signed in users" on public.profiles;

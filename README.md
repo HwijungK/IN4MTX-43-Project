@@ -3,9 +3,10 @@
 CommonGround is a campus-first mobile app prototype for helping students make
 friendship-based, in-person connections through shared interests and proximity.
 
-This first draft is an Expo React Native UI prototype. It uses local mock data so
-the team can evaluate the core experience before adding Supabase, realtime chat,
-push notifications, or real location services.
+This first draft is an Expo React Native UI prototype. It uses Supabase auth,
+profiles, and database-backed demo rows so the team can evaluate the core
+experience before adding realtime chat, push notifications, or real location
+services.
 
 ## Current Prototype Scope
 
@@ -36,8 +37,8 @@ npm run tunnel
 ```
 
 For UI-only testing, tap **Continue in test mode** on the login screen. This bypasses
-Supabase auth and uses the local mock profile/data. Use real login/signup when
-testing backend behavior.
+Supabase auth while still loading database-backed demo rows when Supabase is
+configured. Use real login/signup when testing backend behavior.
 
 ## Product Direction
 
