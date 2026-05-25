@@ -114,6 +114,26 @@ export const styles = StyleSheet.create({
     gap: 8,
     justifyContent: "flex-end"
   },
+  chatAvatar: {
+    alignItems: "center",
+    backgroundColor: "#E5F0EF",
+    borderColor: "#BBD3D1",
+    borderRadius: 18,
+    borderWidth: 1,
+    height: 36,
+    justifyContent: "center",
+    width: 36
+  },
+  chatAvatarText: {
+    color: "#24575A",
+    fontSize: 15,
+    fontWeight: "900"
+  },
+  chatIdentityRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10
+  },
   chatActionButton: {
     alignItems: "center",
     backgroundColor: "#FFFFFF",
@@ -159,12 +179,29 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "900"
   },
+  dangerActionButton: {
+    alignItems: "center",
+    backgroundColor: "#FFF1F0",
+    borderColor: "#D64545",
+    borderRadius: 8,
+    borderWidth: 1,
+    minHeight: 36,
+    justifyContent: "center",
+    paddingHorizontal: 12
+  },
+  dangerActionText: {
+    color: "#B42318",
+    fontSize: 12,
+    fontWeight: "900"
+  },
   groupFuzzy: {
+    alignItems: "center",
     backgroundColor: "rgba(47, 111, 115, 0.18)",
     borderColor: "rgba(47, 111, 115, 0.38)",
     borderRadius: 56,
     borderWidth: 2,
     height: 112,
+    justifyContent: "center",
     position: "absolute",
     width: 112
   },
@@ -175,6 +212,12 @@ export const styles = StyleSheet.create({
   groupFuzzyB: {
     bottom: "10%",
     right: "10%"
+  },
+  groupFuzzyText: {
+    color: "#24575A",
+    fontSize: 11,
+    fontWeight: "900",
+    textAlign: "center"
   },
   header: {
     gap: 8,
@@ -259,14 +302,23 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "900"
   },
+  mapActions: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8
+  },
   mapDot: {
+    alignItems: "center",
     backgroundColor: "#D95F43",
     borderColor: "#FFFFFF",
-    borderRadius: 14,
+    borderRadius: 8,
     borderWidth: 3,
-    height: 28,
+    minHeight: 30,
+    justifyContent: "center",
+    maxWidth: 96,
+    minWidth: 50,
+    paddingHorizontal: 8,
     position: "absolute",
-    width: 28
   },
   mapDotA: {
     left: "22%",
@@ -279,6 +331,11 @@ export const styles = StyleSheet.create({
   mapDotC: {
     bottom: "20%",
     left: "30%"
+  },
+  mapDotText: {
+    color: "#FFFFFF",
+    fontSize: 11,
+    fontWeight: "900"
   },
   matchRate: {
     color: "#D95F43",
@@ -358,6 +415,12 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700"
   },
+  noticeInlineText: {
+    color: "#24575A",
+    fontSize: 13,
+    fontWeight: "800",
+    lineHeight: 18
+  },
   panel: {
     backgroundColor: "#FFF9ED",
     borderColor: "#E1D8C8",
@@ -390,6 +453,14 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     justifyContent: "space-between"
+  },
+  recoveryInput: {
+    flex: 1
+  },
+  recoveryPanel: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10
   },
   secondaryButton: {
     alignItems: "center",

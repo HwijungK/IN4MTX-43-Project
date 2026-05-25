@@ -22,7 +22,18 @@ export function LoginScreen({
 }: LoginScreenProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [recoveryNotice, setRecoveryNotice] = useState("");
   const disableLogin = authLoading || !email.trim() || !password;
+
+  function requestPasswordReset() {
+    const targetEmail = recoveryEmail.trim() || email.trim();
+    setRecoveryNotice(
+      targetEmail
+        ? `Password reset instructions would be sent to ${targetEmail}.`
+        : "Enter your university email to start account recovery."
+    );
+  }
 
   return (
     <Screen>
@@ -50,6 +61,24 @@ export function LoginScreen({
           placeholderTextColor="#7C756A"
           secureTextEntry
         />
+        <View style={styles.recoveryPanel}>
+          <TextInput
+            style={[styles.input, styles.recoveryInput]}
+            value={recoveryEmail}
+            onChangeText={setRecoveryEmail}
+            placeholder="Recovery email"
+            placeholderTextColor="#7C756A"
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="email-address"
+          />
+          <SecondaryButton
+            label="Reset password"
+            onPress={requestPasswordReset}
+            disabled={authLoading}
+          />
+        </View>
+        {recoveryNotice ? <Text style={styles.noticeInlineText}>{recoveryNotice}</Text> : null}
         {authError ? <Text style={styles.errorText}>{authError}</Text> : null}
         <PrimaryButton
           label={authLoading ? "Working..." : "Log in"}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
 import { SecondaryButton, SmallButton } from "../components/Button";
@@ -30,6 +30,15 @@ export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
   );
 
   const selectedChat = visibleChats.find((chat) => chat.id === selectedChatId);
+
+  useEffect(() => {
+    if (!chatNotice) {
+      return undefined;
+    }
+
+    const timeoutId = setTimeout(() => setChatNotice(""), 3500);
+    return () => clearTimeout(timeoutId);
+  }, [chatNotice]);
 
   function togglePin(chatId: string) {
     setPinnedChatIds((current) =>
@@ -141,16 +150,23 @@ export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
           <View key={chat.id} style={styles.listCard}>
             <View style={styles.rowBetween}>
               <Pressable style={styles.flexOne} onPress={() => setSelectedChatId(chat.id)}>
-                <Text style={styles.cardTitle}>
-                  {isPinned ? "Pinned | " : ""}
-                  {chat.title}
-                </Text>
-                <Text style={styles.metaText}>
-                  {chat.kind} | {chat.participants} participants
-                </Text>
+                <View style={styles.chatIdentityRow}>
+                  <View style={styles.chatAvatar}>
+                    <Text style={styles.chatAvatarText}>{chat.title.slice(0, 1).toUpperCase()}</Text>
+                  </View>
+                  <View style={styles.flexOne}>
+                    <Text style={styles.cardTitle}>
+                      {isPinned ? "Pinned: " : ""}
+                      {chat.title}
+                    </Text>
+                    <Text style={styles.metaText}>
+                      {chat.kind} | {chat.participants} participants
+                    </Text>
+                  </View>
+                </View>
               </Pressable>
               <SmallButton
-                label="⚙"
+                label="Actions"
                 onPress={() => setOpenSettingsChatId(settingsOpen ? null : chat.id)}
               />
             </View>
@@ -159,11 +175,11 @@ export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
                 <Pressable style={styles.chatActionButton} onPress={() => togglePin(chat.id)}>
                   <Text style={styles.chatActionText}>{isPinned ? "Unpin" : "Pin"}</Text>
                 </Pressable>
-                <Pressable style={styles.dangerIconButton} onPress={() => reportChat(chat)}>
-                  <Text style={styles.dangerIconText}>!</Text>
+                <Pressable style={styles.dangerActionButton} onPress={() => reportChat(chat)}>
+                  <Text style={styles.dangerActionText}>Report</Text>
                 </Pressable>
-                <Pressable style={styles.dangerIconButton} onPress={() => blockChat(chat)}>
-                  <Text style={styles.dangerIconText}>✋</Text>
+                <Pressable style={styles.dangerActionButton} onPress={() => blockChat(chat)}>
+                  <Text style={styles.dangerActionText}>Block</Text>
                 </Pressable>
               </View>
             ) : null}

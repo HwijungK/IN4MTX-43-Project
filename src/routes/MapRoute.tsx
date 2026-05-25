@@ -18,6 +18,9 @@ export function MapRoute() {
         onTagQuery={app.setTagQuery}
         onAddTag={app.addTag}
         onCreateTag={app.createTagFromQuery}
+        onAddFriend={app.addFriend}
+        onStartChat={app.startChat}
+        onViewProfile={app.viewProfile}
         onBlock={app.blockUser}
       />
     </ScrollableScreen>

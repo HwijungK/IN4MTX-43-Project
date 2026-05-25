@@ -83,6 +83,8 @@ type AppContextValue = {
   createTagFromQuery: () => Promise<void>;
   enterDevBypass: () => void;
   joinCommunity: (community: Community) => Promise<void>;
+  startChat: (user: NearbyUser) => void;
+  viewProfile: (user: NearbyUser) => void;
   setPendingSignupEmail: (value: string) => void;
   setPendingSignupPassword: (value: string) => void;
   removeTag: (tag: string) => void;
@@ -128,6 +130,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [friendIds, setFriendIds] = useState<string[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<string[]>([]);
   const [notice, setNotice] = useState("");
+
+  useEffect(() => {
+    if (!notice) {
+      return undefined;
+    }
+
+    const timeoutId = setTimeout(() => setNotice(""), 3500);
+    return () => clearTimeout(timeoutId);
+  }, [notice]);
 
   useEffect(() => {
     let isMounted = true;
@@ -241,6 +252,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   function blockUser(id: string) {
     setBlockedUsers((current) => [...current, id]);
     setNotice("User removed from map and proximity chats.");
+  }
+
+  function startChat(user: NearbyUser) {
+    setNotice(`Chat with ${user.name} opened from the map.`);
+  }
+
+  function viewProfile(user: NearbyUser) {
+    setNotice(`Viewing ${user.name}'s campus profile preview.`);
   }
 
   async function joinCommunity(community: Community) {
@@ -544,6 +563,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     createTagFromQuery,
     enterDevBypass,
     joinCommunity,
+    startChat,
+    viewProfile,
     removeTag,
     setAge,
     setBio,

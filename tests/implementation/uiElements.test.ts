@@ -84,6 +84,8 @@ test("implementation: communities screen renders public and request community ac
       }
     ],
     joinedCommunities: ["third-place"],
+    communityQuery: "",
+    onCommunityQuery: () => undefined,
     onJoin: async () => undefined
   });
 
@@ -125,6 +127,9 @@ test("implementation: map screen renders users, groups, and campus tag actions",
     onTagQuery: () => undefined,
     onAddTag: async () => undefined,
     onCreateTag: async () => undefined,
+    onAddFriend: async () => undefined,
+    onStartChat: () => undefined,
+    onViewProfile: () => undefined,
     onBlock: () => undefined
   });
 
