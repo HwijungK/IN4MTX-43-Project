@@ -20,6 +20,15 @@ export function MainTabs() {
         tabBarIcon: ({ color }) => (
           <Text style={{ color, fontSize: 18, fontWeight: "900" }}>{tabIcons[route.name]}</Text>
         ),
+        tabBarLabel: ({ color, focused }) => (
+          <Text
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            style={{ color, fontSize: 10, fontWeight: focused ? "900" : "600" }}
+          >
+            {route.name}
+          </Text>
+        ),
         tabBarStyle: {
           borderTopColor: "#E1D8C8"
         }

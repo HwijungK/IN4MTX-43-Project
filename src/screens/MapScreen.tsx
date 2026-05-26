@@ -96,7 +96,7 @@ export function MapScreen({
           </View>
         </View>
       ))}
-      <Text style={styles.sectionTitle}>Informal groups nearby</Text>
+      <Text style={styles.sectionTitle}>Groups nearby</Text>
       {nearbyGroups.map((group) => (
         <View key={group.id} style={styles.listCard}>
           <Text style={styles.cardTitle}>{group.name}</Text>

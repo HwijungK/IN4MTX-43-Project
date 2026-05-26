@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { LoginRoute } from "../routes/LoginRoute";
 import { SetupRoute } from "../routes/SetupRoute";
+import { UserProfileRoute } from "../routes/UserProfileRoute";
 import { styles } from "../styles";
 import { useAppContext } from "../state/AppContext";
 import { MainTabs } from "./MainTabs";
@@ -26,7 +27,10 @@ export function RootNavigator() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {app.devBypassAuth ? (
-          <Stack.Screen name="Main" component={MainTabs} />
+          <>
+            <Stack.Screen name="Main" component={MainTabs} />
+            <Stack.Screen name="UserProfile" component={UserProfileRoute} />
+          </>
         ) : !app.session ? (
           <>
             <Stack.Screen name="Login" component={LoginRoute} />
@@ -35,7 +39,10 @@ export function RootNavigator() {
         ) : !app.profile ? (
           <Stack.Screen name="Setup" component={SetupRoute} />
         ) : (
-          <Stack.Screen name="Main" component={MainTabs} />
+          <>
+            <Stack.Screen name="Main" component={MainTabs} />
+            <Stack.Screen name="UserProfile" component={UserProfileRoute} />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

@@ -10,9 +10,11 @@ type ChatsScreenProps = {
   chats: Chat[];
   messages: ChatMessage[];
   notice: string;
+  focusedChatId?: string | null;
+  onClearFocusedChat?: () => void;
 };
 
-export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
+export function ChatsScreen({ chats, messages, notice, focusedChatId, onClearFocusedChat }: ChatsScreenProps) {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [openSettingsChatId, setOpenSettingsChatId] = useState<string | null>(null);
   const [pinnedChatIds, setPinnedChatIds] = useState<string[]>(["maya"]);
@@ -30,6 +32,14 @@ export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
   );
 
   const selectedChat = visibleChats.find((chat) => chat.id === selectedChatId);
+  const pinnedChats = visibleChats.filter((chat) => pinnedChatIds.includes(chat.id));
+  const otherChats = visibleChats.filter((chat) => !pinnedChatIds.includes(chat.id));
+
+  useEffect(() => {
+    if (focusedChatId) {
+      setSelectedChatId(focusedChatId);
+    }
+  }, [focusedChatId]);
 
   useEffect(() => {
     if (!chatNotice) {
@@ -96,7 +106,13 @@ export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
               {selectedChat.kind} | {selectedChat.participants} participants
             </Text>
           </View>
-          <SecondaryButton label="Back" onPress={() => setSelectedChatId(null)} />
+          <SecondaryButton
+            label="Back"
+            onPress={() => {
+              setSelectedChatId(null);
+              onClearFocusedChat?.();
+            }}
+          />
         </View>
 
         <ScrollView
@@ -142,7 +158,14 @@ export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
       showsVerticalScrollIndicator
     >
       <Notice text={chatNotice || notice} />
-      {visibleChats.map((chat) => {
+      {pinnedChats.length ? <Text style={styles.sectionTitle}>Pinned chats</Text> : null}
+      {pinnedChats.map((chat) => renderChatCard(chat))}
+      <Text style={styles.sectionTitle}>All chats</Text>
+      {otherChats.map((chat) => renderChatCard(chat))}
+    </ScrollView>
+  );
+
+  function renderChatCard(chat: Chat) {
         const isPinned = pinnedChatIds.includes(chat.id);
         const settingsOpen = openSettingsChatId === chat.id;
 
@@ -155,10 +178,7 @@ export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
                     <Text style={styles.chatAvatarText}>{chat.title.slice(0, 1).toUpperCase()}</Text>
                   </View>
                   <View style={styles.flexOne}>
-                    <Text style={styles.cardTitle}>
-                      {isPinned ? "Pinned: " : ""}
-                      {chat.title}
-                    </Text>
+                    <Text style={styles.cardTitle}>{chat.title}</Text>
                     <Text style={styles.metaText}>
                       {chat.kind} | {chat.participants} participants
                     </Text>
@@ -189,7 +209,5 @@ export function ChatsScreen({ chats, messages, notice }: ChatsScreenProps) {
             </Pressable>
           </View>
         );
-      })}
-    </ScrollView>
-  );
+  }
 }

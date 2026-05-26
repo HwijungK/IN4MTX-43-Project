@@ -60,6 +60,7 @@ type AppContextValue = {
   displayName: string;
   devBypassAuth: boolean;
   filteredTags: Interest[];
+  focusedChatId: string | null;
   friends: NearbyUser[];
   identity: string;
   interestChoices: Interest[];
@@ -83,8 +84,8 @@ type AppContextValue = {
   createTagFromQuery: () => Promise<void>;
   enterDevBypass: () => void;
   joinCommunity: (community: Community) => Promise<void>;
-  startChat: (user: NearbyUser) => void;
-  viewProfile: (user: NearbyUser) => void;
+  openChatWithUser: (user: NearbyUser) => void;
+  clearFocusedChat: () => void;
   setPendingSignupEmail: (value: string) => void;
   setPendingSignupPassword: (value: string) => void;
   removeTag: (tag: string) => void;
@@ -126,6 +127,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [nearbyGroupRows, setNearbyGroupRows] = useState<NearbyGroup[]>(nearbyGroups);
   const [chatRows, setChatRows] = useState<Chat[]>(chats);
   const [chatMessageRows, setChatMessageRows] = useState<ChatMessage[]>(chatMessages);
+  const [focusedChatId, setFocusedChatId] = useState<string | null>(null);
   const [communityRows, setCommunityRows] = useState<Community[]>(communities);
   const [friendIds, setFriendIds] = useState<string[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<string[]>([]);
@@ -254,12 +256,38 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setNotice("User removed from map and proximity chats.");
   }
 
-  function startChat(user: NearbyUser) {
-    setNotice(`Chat with ${user.name} opened from the map.`);
+  function openChatWithUser(user: NearbyUser) {
+    const existingChat = chatRows.find((chat) => chat.kind === "Friends" && chat.title === user.name);
+    const chatId = existingChat?.id ?? `map-${user.id}`;
+
+    if (!existingChat) {
+      setChatRows((current) => [
+        ...current,
+        {
+          id: chatId,
+          title: user.name,
+          kind: "Friends",
+          preview: user.status,
+          participants: 2
+        }
+      ]);
+      setChatMessageRows((current) => [
+        ...current,
+        {
+          id: `${chatId}-hello`,
+          chatId,
+          sender: user.name,
+          content: user.status,
+          time: "Now"
+        }
+      ]);
+    }
+
+    setFocusedChatId(chatId);
   }
 
-  function viewProfile(user: NearbyUser) {
-    setNotice(`Viewing ${user.name}'s campus profile preview.`);
+  function clearFocusedChat() {
+    setFocusedChatId(null);
   }
 
   async function joinCommunity(community: Community) {
@@ -540,6 +568,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     displayName,
     devBypassAuth,
     filteredTags,
+    focusedChatId,
     friends,
     identity,
     interestChoices,
@@ -561,10 +590,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addTag,
     blockUser,
     createTagFromQuery,
+    clearFocusedChat,
     enterDevBypass,
     joinCommunity,
-    startChat,
-    viewProfile,
+    openChatWithUser,
     removeTag,
     setAge,
     setBio,
