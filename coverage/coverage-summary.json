@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-05-25T22:10:07.444Z",
+  "generatedAt": "2026-05-28T18:24:21.946Z",
   "unit": {
-    "coveredLines": 537,
-    "totalLines": 1588,
-    "lineCoveragePercent": 33.82,
+    "coveredLines": 608,
+    "totalLines": 1762,
+    "lineCoveragePercent": 34.51,
     "files": [
       {
         "file": "src/components/Button.tsx",
@@ -62,13 +62,13 @@
       {
         "file": "src/navigation/MainTabs.tsx",
         "covered": 0,
-        "total": 16,
+        "total": 25,
         "percent": 0
       },
       {
         "file": "src/navigation/RootNavigator.tsx",
         "covered": 0,
-        "total": 15,
+        "total": 16,
         "percent": 0
       },
       {
@@ -80,7 +80,7 @@
       {
         "file": "src/routes/CommunitiesRoute.tsx",
         "covered": 0,
-        "total": 7,
+        "total": 9,
         "percent": 0
       },
       {
@@ -98,7 +98,7 @@
       {
         "file": "src/routes/MapRoute.tsx",
         "covered": 0,
-        "total": 7,
+        "total": 13,
         "percent": 0
       },
       {
@@ -114,15 +114,21 @@
         "percent": 0
       },
       {
+        "file": "src/routes/UserProfileRoute.tsx",
+        "covered": 0,
+        "total": 13,
+        "percent": 0
+      },
+      {
         "file": "src/screens/ChatsScreen.tsx",
         "covered": 0,
-        "total": 53,
+        "total": 68,
         "percent": 0
       },
       {
         "file": "src/screens/CommunitiesScreen.tsx",
         "covered": 0,
-        "total": 9,
+        "total": 17,
         "percent": 0
       },
       {
@@ -134,19 +140,25 @@
       {
         "file": "src/screens/LoginScreen.tsx",
         "covered": 0,
-        "total": 11,
+        "total": 18,
         "percent": 0
       },
       {
         "file": "src/screens/MapScreen.tsx",
         "covered": 0,
-        "total": 9,
+        "total": 10,
         "percent": 0
       },
       {
         "file": "src/screens/ProfileScreen.tsx",
         "covered": 0,
         "total": 14,
+        "percent": 0
+      },
+      {
+        "file": "src/screens/ReadOnlyProfileScreen.tsx",
+        "covered": 0,
+        "total": 8,
         "percent": 0
       },
       {
@@ -188,14 +200,14 @@
       {
         "file": "src/state/AppContext.tsx",
         "covered": 0,
-        "total": 360,
+        "total": 393,
         "percent": 0
       },
       {
         "file": "src/styles.ts",
-        "covered": 516,
-        "total": 517,
-        "percent": 99.81
+        "covered": 587,
+        "total": 588,
+        "percent": 99.83
       },
       {
         "file": "src/utils/format.ts",
@@ -224,9 +236,9 @@
     ]
   },
   "implementation": {
-    "coveredLines": 648,
-    "totalLines": 1588,
-    "lineCoveragePercent": 40.81,
+    "coveredLines": 1063,
+    "totalLines": 1762,
+    "lineCoveragePercent": 60.33,
     "files": [
       {
         "file": "src/components/Button.tsx",
@@ -278,20 +290,20 @@
       },
       {
         "file": "src/lib/supabase.ts",
-        "covered": 0,
+        "covered": 12,
         "total": 15,
-        "percent": 0
+        "percent": 80
       },
       {
         "file": "src/navigation/MainTabs.tsx",
         "covered": 0,
-        "total": 16,
+        "total": 25,
         "percent": 0
       },
       {
         "file": "src/navigation/RootNavigator.tsx",
         "covered": 0,
-        "total": 15,
+        "total": 16,
         "percent": 0
       },
       {
@@ -303,7 +315,7 @@
       {
         "file": "src/routes/CommunitiesRoute.tsx",
         "covered": 0,
-        "total": 7,
+        "total": 9,
         "percent": 0
       },
       {
@@ -321,7 +333,7 @@
       {
         "file": "src/routes/MapRoute.tsx",
         "covered": 0,
-        "total": 7,
+        "total": 13,
         "percent": 0
       },
       {
@@ -337,16 +349,22 @@
         "percent": 0
       },
       {
-        "file": "src/screens/ChatsScreen.tsx",
+        "file": "src/routes/UserProfileRoute.tsx",
         "covered": 0,
-        "total": 53,
+        "total": 13,
         "percent": 0
       },
       {
+        "file": "src/screens/ChatsScreen.tsx",
+        "covered": 58,
+        "total": 68,
+        "percent": 85.29
+      },
+      {
         "file": "src/screens/CommunitiesScreen.tsx",
-        "covered": 8,
-        "total": 9,
-        "percent": 88.89
+        "covered": 16,
+        "total": 17,
+        "percent": 94.12
       },
       {
         "file": "src/screens/FriendsScreen.tsx",
@@ -357,20 +375,26 @@
       {
         "file": "src/screens/LoginScreen.tsx",
         "covered": 0,
-        "total": 11,
+        "total": 18,
         "percent": 0
       },
       {
         "file": "src/screens/MapScreen.tsx",
-        "covered": 8,
-        "total": 9,
-        "percent": 88.89
+        "covered": 9,
+        "total": 10,
+        "percent": 90
       },
       {
         "file": "src/screens/ProfileScreen.tsx",
         "covered": 13,
         "total": 14,
         "percent": 92.86
+      },
+      {
+        "file": "src/screens/ReadOnlyProfileScreen.tsx",
+        "covered": 7,
+        "total": 8,
+        "percent": 87.5
       },
       {
         "file": "src/screens/SetupScreen.tsx",
@@ -380,27 +404,27 @@
       },
       {
         "file": "src/services/authService.ts",
-        "covered": 0,
+        "covered": 25,
         "total": 31,
-        "percent": 0
+        "percent": 80.65
       },
       {
         "file": "src/services/demoDataService.ts",
-        "covered": 0,
+        "covered": 91,
         "total": 106,
-        "percent": 0
+        "percent": 85.85
       },
       {
         "file": "src/services/profileService.ts",
-        "covered": 0,
+        "covered": 77,
         "total": 96,
-        "percent": 0
+        "percent": 80.21
       },
       {
         "file": "src/services/socialService.ts",
-        "covered": 0,
+        "covered": 65,
         "total": 76,
-        "percent": 0
+        "percent": 85.53
       },
       {
         "file": "src/services/supabaseHealth.ts",
@@ -411,14 +435,14 @@
       {
         "file": "src/state/AppContext.tsx",
         "covered": 0,
-        "total": 360,
+        "total": 393,
         "percent": 0
       },
       {
         "file": "src/styles.ts",
-        "covered": 516,
-        "total": 517,
-        "percent": 99.81
+        "covered": 587,
+        "total": 588,
+        "percent": 99.83
       },
       {
         "file": "src/utils/format.ts",
@@ -447,9 +471,9 @@
     ]
   },
   "combined": {
-    "coveredLines": 649,
-    "totalLines": 1588,
-    "lineCoveragePercent": 40.87,
+    "coveredLines": 1064,
+    "totalLines": 1762,
+    "lineCoveragePercent": 60.39,
     "files": [
       {
         "file": "src/components/Button.tsx",
@@ -501,20 +525,20 @@
       },
       {
         "file": "src/lib/supabase.ts",
-        "covered": 0,
+        "covered": 12,
         "total": 15,
-        "percent": 0
+        "percent": 80
       },
       {
         "file": "src/navigation/MainTabs.tsx",
         "covered": 0,
-        "total": 16,
+        "total": 25,
         "percent": 0
       },
       {
         "file": "src/navigation/RootNavigator.tsx",
         "covered": 0,
-        "total": 15,
+        "total": 16,
         "percent": 0
       },
       {
@@ -526,7 +550,7 @@
       {
         "file": "src/routes/CommunitiesRoute.tsx",
         "covered": 0,
-        "total": 7,
+        "total": 9,
         "percent": 0
       },
       {
@@ -544,7 +568,7 @@
       {
         "file": "src/routes/MapRoute.tsx",
         "covered": 0,
-        "total": 7,
+        "total": 13,
         "percent": 0
       },
       {
@@ -560,16 +584,22 @@
         "percent": 0
       },
       {
-        "file": "src/screens/ChatsScreen.tsx",
+        "file": "src/routes/UserProfileRoute.tsx",
         "covered": 0,
-        "total": 53,
+        "total": 13,
         "percent": 0
       },
       {
+        "file": "src/screens/ChatsScreen.tsx",
+        "covered": 58,
+        "total": 68,
+        "percent": 85.29
+      },
+      {
         "file": "src/screens/CommunitiesScreen.tsx",
-        "covered": 8,
-        "total": 9,
-        "percent": 88.89
+        "covered": 16,
+        "total": 17,
+        "percent": 94.12
       },
       {
         "file": "src/screens/FriendsScreen.tsx",
@@ -580,20 +610,26 @@
       {
         "file": "src/screens/LoginScreen.tsx",
         "covered": 0,
-        "total": 11,
+        "total": 18,
         "percent": 0
       },
       {
         "file": "src/screens/MapScreen.tsx",
-        "covered": 8,
-        "total": 9,
-        "percent": 88.89
+        "covered": 9,
+        "total": 10,
+        "percent": 90
       },
       {
         "file": "src/screens/ProfileScreen.tsx",
         "covered": 13,
         "total": 14,
         "percent": 92.86
+      },
+      {
+        "file": "src/screens/ReadOnlyProfileScreen.tsx",
+        "covered": 7,
+        "total": 8,
+        "percent": 87.5
       },
       {
         "file": "src/screens/SetupScreen.tsx",
@@ -603,27 +639,27 @@
       },
       {
         "file": "src/services/authService.ts",
-        "covered": 0,
+        "covered": 25,
         "total": 31,
-        "percent": 0
+        "percent": 80.65
       },
       {
         "file": "src/services/demoDataService.ts",
-        "covered": 0,
+        "covered": 91,
         "total": 106,
-        "percent": 0
+        "percent": 85.85
       },
       {
         "file": "src/services/profileService.ts",
-        "covered": 0,
+        "covered": 77,
         "total": 96,
-        "percent": 0
+        "percent": 80.21
       },
       {
         "file": "src/services/socialService.ts",
-        "covered": 0,
+        "covered": 65,
         "total": 76,
-        "percent": 0
+        "percent": 85.53
       },
       {
         "file": "src/services/supabaseHealth.ts",
@@ -634,14 +670,14 @@
       {
         "file": "src/state/AppContext.tsx",
         "covered": 0,
-        "total": 360,
+        "total": 393,
         "percent": 0
       },
       {
         "file": "src/styles.ts",
-        "covered": 516,
-        "total": 517,
-        "percent": 99.81
+        "covered": 587,
+        "total": 588,
+        "percent": 99.83
       },
       {
         "file": "src/utils/format.ts",
@@ -669,9 +705,9 @@
       }
     ]
   },
-  "coveredLines": 649,
-  "totalLines": 1588,
-  "lineCoveragePercent": 40.87,
+  "coveredLines": 1064,
+  "totalLines": 1762,
+  "lineCoveragePercent": 60.39,
   "files": [
     {
       "file": "src/components/Button.tsx",
@@ -723,20 +759,20 @@
     },
     {
       "file": "src/lib/supabase.ts",
-      "covered": 0,
+      "covered": 12,
       "total": 15,
-      "percent": 0
+      "percent": 80
     },
     {
       "file": "src/navigation/MainTabs.tsx",
       "covered": 0,
-      "total": 16,
+      "total": 25,
       "percent": 0
     },
     {
       "file": "src/navigation/RootNavigator.tsx",
       "covered": 0,
-      "total": 15,
+      "total": 16,
       "percent": 0
     },
     {
@@ -748,7 +784,7 @@
     {
       "file": "src/routes/CommunitiesRoute.tsx",
       "covered": 0,
-      "total": 7,
+      "total": 9,
       "percent": 0
     },
     {
@@ -766,7 +802,7 @@
     {
       "file": "src/routes/MapRoute.tsx",
       "covered": 0,
-      "total": 7,
+      "total": 13,
       "percent": 0
     },
     {
@@ -782,16 +818,22 @@
       "percent": 0
     },
     {
-      "file": "src/screens/ChatsScreen.tsx",
+      "file": "src/routes/UserProfileRoute.tsx",
       "covered": 0,
-      "total": 53,
+      "total": 13,
       "percent": 0
     },
     {
+      "file": "src/screens/ChatsScreen.tsx",
+      "covered": 58,
+      "total": 68,
+      "percent": 85.29
+    },
+    {
       "file": "src/screens/CommunitiesScreen.tsx",
-      "covered": 8,
-      "total": 9,
-      "percent": 88.89
+      "covered": 16,
+      "total": 17,
+      "percent": 94.12
     },
     {
       "file": "src/screens/FriendsScreen.tsx",
@@ -802,20 +844,26 @@
     {
       "file": "src/screens/LoginScreen.tsx",
       "covered": 0,
-      "total": 11,
+      "total": 18,
       "percent": 0
     },
     {
       "file": "src/screens/MapScreen.tsx",
-      "covered": 8,
-      "total": 9,
-      "percent": 88.89
+      "covered": 9,
+      "total": 10,
+      "percent": 90
     },
     {
       "file": "src/screens/ProfileScreen.tsx",
       "covered": 13,
       "total": 14,
       "percent": 92.86
+    },
+    {
+      "file": "src/screens/ReadOnlyProfileScreen.tsx",
+      "covered": 7,
+      "total": 8,
+      "percent": 87.5
     },
     {
       "file": "src/screens/SetupScreen.tsx",
@@ -825,27 +873,27 @@
     },
     {
       "file": "src/services/authService.ts",
-      "covered": 0,
+      "covered": 25,
       "total": 31,
-      "percent": 0
+      "percent": 80.65
     },
     {
       "file": "src/services/demoDataService.ts",
-      "covered": 0,
+      "covered": 91,
       "total": 106,
-      "percent": 0
+      "percent": 85.85
     },
     {
       "file": "src/services/profileService.ts",
-      "covered": 0,
+      "covered": 77,
       "total": 96,
-      "percent": 0
+      "percent": 80.21
     },
     {
       "file": "src/services/socialService.ts",
-      "covered": 0,
+      "covered": 65,
       "total": 76,
-      "percent": 0
+      "percent": 85.53
     },
     {
       "file": "src/services/supabaseHealth.ts",
@@ -856,14 +904,14 @@
     {
       "file": "src/state/AppContext.tsx",
       "covered": 0,
-      "total": 360,
+      "total": 393,
       "percent": 0
     },
     {
       "file": "src/styles.ts",
-      "covered": 516,
-      "total": 517,
-      "percent": 99.81
+      "covered": 587,
+      "total": 588,
+      "percent": 99.83
     },
     {
       "file": "src/utils/format.ts",
